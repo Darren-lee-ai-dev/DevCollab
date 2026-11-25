@@ -1,0 +1,17 @@
+
+{
+  "name": "devcollab",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/frontend",
+    "apps/backend",
+    "packages/shared"
+  ],
+  "scripts": {
+    "dev:frontend": "npm run dev --workspace=@devcollab/frontend",
+    "dev:backend": "npm run dev --workspace=@devcollab/backend",
+    "build:frontend": "npm run build --workspace=@devcollab/frontend",
+    "build:backend": "npm run build --workspace=@devcollab/backend"
+  }
+}
