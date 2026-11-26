@@ -23,7 +23,19 @@ export function authenticate(
     return;
   }
 
-  const token = authorization.slice(7);
+  const bearerToken = authorization?.startsWith("Bearer ") ? authorization.slice(7) : undefined;
+
+  const cookieToken = req.cookies?.accessToken;
+
+  const token = bearerToken || cookieToken;
+
+  if (!token) {
+  res.status(401).json({
+    success: false,
+    message: "Authentication required",
+    });
+     return;
+  }
   const jwtSecret = process.env.JWT_SECRET;
 
   if (!jwtSecret) {
@@ -72,3 +84,4 @@ export function authenticate(
     });
   }
 }
+
