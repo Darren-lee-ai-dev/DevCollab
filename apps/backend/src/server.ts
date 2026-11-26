@@ -5,6 +5,7 @@ import express from "express";
 import cors from "cors";
 import usersRoutes from "./modules/users/users.routes";
 import authRoutes from "./modules/auth/auth.routes";
+import workspacesRoutes from "./modules/workspaces/workspaces.routes";
 
 const app = express();
 const PORT = Number(process.env.PORT) || 4000;
@@ -34,6 +35,7 @@ app.get("/api/health", (_req, res) => {
 // Authentication routes
 app.use("/api/auth", authRoutes);
 app.use("/api/users", usersRoutes);
+app.use("/api/workspaces", workspacesRoutes);
 
 app.listen(PORT, () => {
   console.log(
