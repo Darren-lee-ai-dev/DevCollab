@@ -6,11 +6,12 @@ import { Eye, EyeOff, Loader2 } from "lucide-react";
 
 import AuthCard from "@/components/auth/auth-card";
 import { loginUser } from "@/lib/auth";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -30,6 +31,10 @@ export default function LoginPage() {
         password,
       });
 
+       setSuccess("Login successful! Redirecting...");
+
+        router.push("/dashboard");
+        router.refresh();
       setSuccess("Login successful! Your credentials are valid.");
 
       // Browser session handling will be added after

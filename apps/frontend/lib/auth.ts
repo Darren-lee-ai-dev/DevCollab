@@ -58,3 +58,29 @@ export async function registerUser(data: RegisterData) {
 export async function loginUser(data: LoginData) {
   return handleAuthRequest("login", data);
 }
+export async function getCurrentUser() {
+  const response = await fetch(`${API_URL}/api/users/me`, {
+    method: "GET",
+    credentials: "include",
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw new Error("Not authenticated");
+  }
+
+  return response.json();
+}
+
+export async function logoutUser() {
+  const response = await fetch(`${API_URL}/api/auth/logout`, {
+    method: "POST",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Unable to log out");
+  }
+
+  return response.json();
+}
