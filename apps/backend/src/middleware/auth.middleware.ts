@@ -1,4 +1,3 @@
-
 import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
@@ -13,9 +12,12 @@ export function authenticate(
   next: NextFunction
 ): void {
   const authorization = req.headers.authorization;
+  const bearerToken = authorization?.startsWith("Bearer ")
+    ? authorization.slice(7)
+    : undefined;
+  const token = bearerToken || req.cookies?.accessToken;
 
-  // Check Authorization header
-  if (!authorization?.startsWith("Bearer ")) {
+  if (!token) {
     res.status(401).json({
       success: false,
       message: "Authentication required",
@@ -23,19 +25,6 @@ export function authenticate(
     return;
   }
 
-  const bearerToken = authorization?.startsWith("Bearer ") ? authorization.slice(7) : undefined;
-
-  const cookieToken = req.cookies?.accessToken;
-
-  const token = bearerToken || cookieToken;
-
-  if (!token) {
-  res.status(401).json({
-    success: false,
-    message: "Authentication required",
-    });
-     return;
-  }
   const jwtSecret = process.env.JWT_SECRET;
 
   if (!jwtSecret) {
@@ -84,4 +73,3 @@ export function authenticate(
     });
   }
 }
-

@@ -36,6 +36,7 @@ async function handleAuthRequest(
 ): Promise<AuthResponse> {
   const response = await fetch(`${API_URL}/api/auth/${endpoint}`, {
     method: "POST",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
