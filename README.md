@@ -10,6 +10,7 @@ Private Team Messaging Platform
 ![Express](https://img.shields.io/badge/Express-API-black?logo=express)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-4169E1?logo=postgresql)
 ![Prisma](https://img.shields.io/badge/Prisma-ORM-2D3748?logo=prisma)
+![CI](https://github.com/Darren-lee-ai-dev/DevCollab/actions/workflows/ci.yml/badge.svg)
 
 ## Features
 
