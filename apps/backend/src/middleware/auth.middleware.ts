@@ -1,4 +1,3 @@
-
 import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
@@ -12,40 +11,20 @@ export function authenticate(
   res: Response,
   next: NextFunction
 ): void {
-  
   const authorization = req.headers.authorization;
-
-<<<<<<< Updated upstream
-  // Check Authorization header
-  if (!authorization?.startsWith("Bearer ")) {
-=======
-  const bearerToken = authorization?.startsWith("Bearer ") ? authorization.slice(7) : undefined;
-
-  const cookieToken = req.cookies?.accessToken;
-
-  const token = bearerToken || cookieToken;
-  console.log("Authentication Debug:", {
-  hasAuthorizationHeader: Boolean(authorization),
-  hasBearerToken: Boolean(bearerToken),
-  hasCookie: Boolean(req.cookies?.accessToken),
-  hasToken: Boolean(token),
-});
-  
+  const bearerToken = authorization?.startsWith("Bearer ")
+    ? authorization.slice(7)
+    : undefined;
+  const token = bearerToken || req.cookies?.accessToken;
 
   if (!token) {
->>>>>>> Stashed changes
     res.status(401).json({
       success: false,
       message: "Authentication required",
     });
     return;
   }
-<<<<<<< Updated upstream
 
-  const token = authorization.slice(7);
-=======
-  
->>>>>>> Stashed changes
   const jwtSecret = process.env.JWT_SECRET;
 
   if (!jwtSecret) {
@@ -87,16 +66,10 @@ export function authenticate(
     res.locals.userEmail = payload.email;
 
     next();
-  } catch(error) {
-    console.error(
-    "[JWT ERROR]",
-    error instanceof Error ? error.message : error
-  );
-
-  res.status(401).json({
-    success: false,
-    message: "Invalid or expired access token",
-  });
+  } catch {
+    res.status(401).json({
+      success: false,
+      message: "Invalid or expired access token",
+    });
   }
-  
 }

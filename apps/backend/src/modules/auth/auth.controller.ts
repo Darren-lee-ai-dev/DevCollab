@@ -52,11 +52,11 @@ export async function registerController(
 }
 
 
+
 export async function loginController(
   req: Request,
   res: Response
 ): Promise<void> {
-  // Validate request
   const validation = loginSchema.safeParse(req.body);
 
   if (!validation.success) {
@@ -68,22 +68,26 @@ export async function loginController(
         message: issue.message,
       })),
     });
-
     return;
   }
 
   try {
     const result = await loginUser(validation.data);
 
+    // Store JWT in an HTTP-only cookie
+    res.cookie("accessToken", result.accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 15 * 60 * 1000,
+    });
+
     res.status(200).json({
       success: true,
       message: "Login successful",
       user: result.user,
-      accessToken: result.accessToken,
-      tokenType: "Bearer",
-      expiresIn: 900,
     });
-
   } catch (error) {
     if (
       error instanceof Error &&
@@ -93,7 +97,6 @@ export async function loginController(
         success: false,
         message: "Invalid email or password",
       });
-
       return;
     }
 
@@ -104,4 +107,20 @@ export async function loginController(
       message: "Unable to log in",
     });
   }
+}
+export function logoutController(
+  _req: Request,
+  res: Response
+): void {
+  res.clearCookie("accessToken", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+  });
+
+  res.status(200).json({
+    success: true,
+    message: "Logged out successfully",
+  });
 }
