@@ -24,6 +24,12 @@ app.get("/", (_req, res) => {
   });
 });
 
+// Authentication routes
+app.use("/api/auth", authRoutes);
+app.use("/api/users", usersRoutes);
+app.use("/api/workspaces", workspacesRoutes);
+
+
 app.get("/api/health", (_req, res) => {
   res.status(200).json({
     success: true,
@@ -31,9 +37,13 @@ app.get("/api/health", (_req, res) => {
   });
 });
 
+<<<<<<< Updated upstream
 // Authentication routes
 app.use("/api/auth", authRoutes);
 app.use("/api/users", usersRoutes);
+=======
+
+>>>>>>> Stashed changes
 
 app.listen(PORT, () => {
   console.log(
